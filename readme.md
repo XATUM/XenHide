@@ -16,6 +16,46 @@ In the digital world, steganography commonly involves embedding data inside digi
 - Concealing information within metadata or file structure patterns  
 
 
-**XenHide** is an experimental attempt to understand and try to mimic some of the core ideas behind such steganographic tools.
+## Current implementation
+
+- inspired by tools such as `steghide` and `zsteg`.
+- Simple command-line scripts: `xencrypt.py`, `xendcrypt.py`.
+- A lightweight GUI prototype in `Application/XenHideGUI.py`.
+
+## Getting Started
+requirements
+- Python 3.x (i used 3.13)
+- stegano
+- PyQt5 (GUI)
+
+Quick install
+
+1. Clone the repository or copy the project files.
+2. (Optional) Create and activate a virtual environment:
+
+	python -m venv .venv
+	source .venv/bin/activate
+    
+
+3. Install any dependencies if needed (this project is mostly self-contained).
+
+Running the examples
+
+- Command line encrypt: `python xencrypt.py` (see script for options)
+- Command line decrypt: `python xendcrypt.py`
+- GUI: `python Application/XenHideGUI.py`
+
+## Files
+- `xencrypt.py` — simple embedding example
+- `xendcrypt.py` — extraction/decode example
+- `Application/XenHideGUI.py` — experimental GUI frontend
+
+## Contributing
+Contributions, issues, and suggestions are welcome. This project is intended for learning — be mindful of legal and ethical considerations when working with steganography.
+
+``` License```
+This project is released under the GNU General Public License v3.0. See the `LICENSE` file for details.
 
 ```Reference:``` ![Wikipedia–Steganography](https://en.wikipedia.org/wiki/Steganography)
+
+---
