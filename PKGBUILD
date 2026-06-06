@@ -1,6 +1,6 @@
 # Maintainer: Xenon Akro <xenonakro@gmail.com>
 pkgname=xenhide
-pkgver=1.0
+pkgver=1.0.0
 pkgrel=1
 pkgdesc="A steganography tool to hide and reveal secret messages inside images"
 arch=("x86_64")
