@@ -1,6 +1,7 @@
 # XenHide a tool for Steganography
+
 ## Status:Early-Development 
-This is my attempt to learn amazing tools like `steghide`, `zsteg`, etc.
+This is my attempt to learn amazing and create tools like `steghide`, `zsteg`, etc.
 
 ## Steganography
 
@@ -56,6 +57,7 @@ Contributions, issues, and suggestions are welcome. This project is intended for
 ``` License```
 This project is released under the GNU General Public License v3.0. See the `LICENSE` file for details.
 
-```Reference:``` ![Wikipedia–Steganography](https://en.wikipedia.org/wiki/Steganography)
+```Reference:```
+[Wikipedia – Steganography](https://en.wikipedia.org/wiki/Steganography)
 
 ---

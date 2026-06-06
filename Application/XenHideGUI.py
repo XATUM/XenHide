@@ -1,3 +1,4 @@
+import os
 import sys
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                               QHBoxLayout, QLabel, QTextEdit, QPushButton,
@@ -6,6 +7,14 @@ from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import Qt
 from xencrypt import encode_image
 from xendcrypt import decode_image
+
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        base = sys._MEIPASS
+    else:
+        base = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base, relative_path)
 
 BG = "#F5F0E8"
 FG = "#1A1A1A"
@@ -217,7 +226,7 @@ class XenHideGUI(QMainWindow):
         super().__init__()
         self.setWindowTitle("XENHIDE")
         self.setGeometry(60, 60, 750, 580)
-        self.setWindowIcon(QIcon("/home/xenon/Projects/Cryptography/XenHide/Assets/logo.png"))
+        self.setWindowIcon(QIcon(resource_path("../Assets/logo.png")))
 
         self.stack = QStackedWidget()
         self.setCentralWidget(self.stack)
