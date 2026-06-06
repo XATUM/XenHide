@@ -84,7 +84,7 @@ class HomeScreen(QWidget):
         layout.addLayout(row)
         layout.addStretch()
 
-        footer = QLabel("XENON AKRO · XENHIDE v0.0.2")
+        footer = QLabel("XENON AKRO · XENHIDE v1.0")
         footer.setAlignment(Qt.AlignCenter)
         footer.setStyleSheet(f"color: #aaa; font-size: 10px; letter-spacing: 2px; border-top: 1px dotted {FG}; padding-top: 12px;")
         layout.addWidget(footer)
