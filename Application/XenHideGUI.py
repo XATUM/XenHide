@@ -14,23 +14,20 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
+
 from xencrypt import encode_image
 from xendcrypt import decode_image
 
 
 def resource_path(relative_path):
-    """Get absolute path to resource, works for dev, PyInstaller, and Nuitka"""
     if hasattr(sys, '_MEIPASS'):
-        # PyInstaller
         base = sys._MEIPASS
     else:
-        # Standard Python and Nuitka
         base = os.path.dirname(os.path.abspath(__file__))
     
-    # 1. Try standard relative path (e.g., jumping up from Application/ to Assets/)
     full_path = os.path.normpath(os.path.join(base, relative_path))
     
-    # 2. Nuitka fallback (if it flattens the directory inside the temp unpack folder)
+    
     if not os.path.exists(full_path):
         flat_path = relative_path.replace("../", "").replace("..\\", "")
         full_path = os.path.normpath(os.path.join(base, flat_path))
@@ -38,12 +35,12 @@ def resource_path(relative_path):
     return full_path
 
 
-# --- UI COLORS & STYLING ---
-BG = "#F6F6F6"  # Light gray matching Fedora Media Writer background
-FG = "#202020"  # Dark gray for text
+#UI COLORS & STYLING
+BG = "#F6F6F6"  # Light gray
+FG = "#202020"  # Dark gray 
 WHITE = "#FFFFFF"
 
-# Standard bottom navigation button style
+
 NAV_BTN_STYLE = f"""
     QPushButton {{
         background: {WHITE};
@@ -63,7 +60,7 @@ NAV_BTN_STYLE = f"""
     }}
 """
 
-# Highlighted action button style
+
 ACTION_BTN_STYLE = f"""
     QPushButton {{
         background: #3584E4; 
@@ -84,7 +81,7 @@ ACTION_BTN_STYLE = f"""
 """
 
 
-# --- LOGIC SECTIONS (Untouched) ---
+
 
 def _system_name():
     return platform.system().lower()
@@ -161,8 +158,6 @@ def pick_save_path(title, start_path, image_filter):
     return _native_save_dialog(title, start_path, image_filter)
 
 
-# --- REWRITTEN FEDORA-STYLE SCREENS ---
-
 class HomeScreen(QWidget):
     def __init__(self, on_encrypt, on_decrypt):
         super().__init__()
@@ -197,7 +192,6 @@ class HomeScreen(QWidget):
         layout.addLayout(logo_layout)
         layout.addSpacing(40)
 
-        # Center Wizard Selection (Radio Buttons)
         center_layout = QVBoxLayout()
         center_layout.setAlignment(Qt.AlignCenter)
 
@@ -430,7 +424,6 @@ class XenHideGUI(QMainWindow):
 def main():
     app = QApplication(sys.argv)
 
-    # Apply global style fixes to match the clean background theme
     app.setStyleSheet(f"""
         QWidget {{
             background-color: {BG};
