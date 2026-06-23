@@ -1,10 +1,18 @@
 import os
+import subprocess
+import shutil
+import platform
 import sys
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                               QHBoxLayout, QLabel, QTextEdit, QPushButton,
                               QFileDialog, QStackedWidget, QFrame, QMessageBox)
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import Qt
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
 from xencrypt import encode_image
 from xendcrypt import decode_image
 
@@ -19,6 +27,104 @@ def resource_path(relative_path):
 BG = "#F5F0E8"
 FG = "#1A1A1A"
 WHITE = "#FFFFFF"
+
+
+def _system_name():
+    return platform.system().lower()
+
+
+def _desktop_name():
+    return os.environ.get("XDG_CURRENT_DESKTOP", "").upper()
+
+
+def _run_dialog_command(command, *args):
+    result = subprocess.run(
+        [command, *args],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    path = result.stdout.strip()
+    return path if result.returncode == 0 and path else ""
+
+
+def _native_open_dialog(title, start_dir, image_filter):
+    dialog = QFileDialog(None, title)
+    dialog.setFileMode(QFileDialog.ExistingFile)
+    dialog.setNameFilter(image_filter)
+    dialog.setOption(QFileDialog.DontUseNativeDialog, False)
+    dialog.setDirectory(start_dir)
+    if dialog.exec_():
+        selected = dialog.selectedFiles()
+        return selected[0] if selected else ""
+    return ""
+
+
+def _native_save_dialog(title, start_path, image_filter):
+    dialog = QFileDialog(None, title)
+    dialog.setAcceptMode(QFileDialog.AcceptSave)
+    dialog.setNameFilter(image_filter)
+    dialog.setDefaultSuffix("png")
+    dialog.setOption(QFileDialog.DontUseNativeDialog, False)
+    dialog.selectFile(start_path)
+    if dialog.exec_():
+        selected = dialog.selectedFiles()
+        return selected[0] if selected else ""
+    return ""
+
+
+def pick_open_path(title, start_dir, image_filter):
+    system_name = _system_name()
+
+    if system_name in {"windows", "darwin"}:
+        return _native_open_dialog(title, start_dir, image_filter)
+
+    desktop_name = _desktop_name()
+
+    if "KDE" in desktop_name and shutil.which("kdialog"):
+        return _run_dialog_command("kdialog", "--getopenfilename", start_dir, image_filter, "--title", title)
+
+    if any(name in desktop_name for name in ("GNOME", "UNITY", "XFCE", "MATE", "CINNAMON")) and shutil.which("zenity"):
+        return _run_dialog_command(
+            "zenity",
+            "--file-selection",
+            "--title",
+            title,
+            "--filename",
+            f"{start_dir}/",
+            "--file-filter",
+            image_filter,
+        )
+
+    return _native_open_dialog(title, start_dir, image_filter)
+
+
+def pick_save_path(title, start_path, image_filter):
+    system_name = _system_name()
+
+    if system_name in {"windows", "darwin"}:
+        return _native_save_dialog(title, start_path, image_filter)
+
+    desktop_name = _desktop_name()
+
+    if "KDE" in desktop_name and shutil.which("kdialog"):
+        return _run_dialog_command("kdialog", "--getsavefilename", start_path, image_filter, "--title", title)
+
+    if any(name in desktop_name for name in ("GNOME", "UNITY", "XFCE", "MATE", "CINNAMON")) and shutil.which("zenity"):
+        return _run_dialog_command(
+            "zenity",
+            "--file-selection",
+            "--save",
+            "--confirm-overwrite",
+            "--title",
+            title,
+            "--filename",
+            start_path,
+            "--file-filter",
+            image_filter,
+        )
+
+    return _native_save_dialog(title, start_path, image_filter)
 
 
 
@@ -138,7 +244,7 @@ class EncryptScreen(QWidget):
         layout.addStretch()
 
     def choose_image(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Select Image", "", "Images (*.png *.bmp)")
+        path = pick_open_path("Select Image", os.path.expanduser("~"), "Images (*.png *.bmp)")
         if path:
             self.image_path = path
             self.upload_btn.setText(f"✓  {path.split('/')[-1]}")
@@ -149,7 +255,7 @@ class EncryptScreen(QWidget):
         if not msg:
             QMessageBox.warning(self, "XenHide", "Please enter a secret message.")
             return
-        out, _ = QFileDialog.getSaveFileName(self, "Save Output Image", "hidden.png", "PNG (*.png)")
+        out = pick_save_path("Save Output Image", os.path.join(os.path.expanduser("~"), "hidden.png"), "PNG (*.png)")
         if out:
             encode_image(self.image_path, msg, out)
             QMessageBox.information(self, "XenHide", f"✓ Message hidden successfully!\nSaved to: {out}")
@@ -206,7 +312,7 @@ class DecryptScreen(QWidget):
         layout.addStretch()
 
     def choose_image(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Select Stego Image", "", "Images (*.png *.bmp)")
+        path = pick_open_path("Select Stego Image", os.path.expanduser("~"), "Images (*.png *.bmp)")
         if path:
             self.image_path = path
             self.upload_btn.setText(f"✓  {path.split('/')[-1]}")
@@ -246,7 +352,6 @@ class XenHideGUI(QMainWindow):
 
 def main():
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
     palette = app.palette()
     from PyQt5.QtGui import QPalette, QColor
     palette.setColor(QPalette.Window, QColor("#F5F0E8"))
