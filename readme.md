@@ -9,6 +9,7 @@ XenHide runs on Linux, Windows, and macOS.
 - [What is Steganography?](#what-is-steganography)
 - [Building](#building)
 - [Usage](#usage)
+- [Installation](#install)
 - [Contributing](#contributing)
 - [Security & Ethics](#security--ethics)
 
@@ -32,12 +33,15 @@ XenHide is a Python project with minimal dependencies. A virtual environment is 
 
 | Platform      | Dependencies              |
 |---------------|---------------------------|
-| Linux         | Python 3.x, stegano       |
-| Windows       | Python 3.x, stegano       |
-| macOS         | Python 3.x, stegano       |
+| Linux         | Python 3.13+, stegano       |
+| Windows       | Python 3.13+, stegano       |
+| macOS         | Python 3.13+, stegano       |
 | GUI (all)     | PyQt5 (optional)          |
 
 Developed and tested on Python 3.13.
+
+## Install
+Download the latest version from the [XenHide Releases](https://github.com/XATUM/XenHide/releases) 
 
 ### Linux / macOS
 
