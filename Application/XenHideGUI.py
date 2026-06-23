@@ -169,7 +169,7 @@ class HomeScreen(QWidget):
         title.setStyleSheet(f"color: {FG}; font-style: italic; border-bottom: 2px dotted {FG}; padding-bottom: 16px;")
         layout.addWidget(title)
 
-        sub = QLabel("Made by Xenon Akro")
+        sub = QLabel("Made by XATUM")
         sub.setAlignment(Qt.AlignCenter)
         sub.setStyleSheet("color: #888; font-size: 11px; letter-spacing: 3px;")
         layout.addWidget(sub)
@@ -190,7 +190,7 @@ class HomeScreen(QWidget):
         layout.addLayout(row)
         layout.addStretch()
 
-        footer = QLabel("XENON AKRO · XENHIDE v1.0")
+        footer = QLabel("XATUM · XENHIDE v1.0")
         footer.setAlignment(Qt.AlignCenter)
         footer.setStyleSheet(f"color: #aaa; font-size: 10px; letter-spacing: 2px; border-top: 1px dotted {FG}; padding-top: 12px;")
         layout.addWidget(footer)
