@@ -19,11 +19,23 @@ from xendcrypt import decode_image
 
 
 def resource_path(relative_path):
+    """Get absolute path to resource, works for dev, PyInstaller, and Nuitka"""
     if hasattr(sys, '_MEIPASS'):
+        # PyInstaller
         base = sys._MEIPASS
     else:
+        # Standard Python and Nuitka
         base = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(base, relative_path)
+    
+    # 1. Try standard relative path (e.g., jumping up from Application/ to Assets/)
+    full_path = os.path.normpath(os.path.join(base, relative_path))
+    
+    # 2. Nuitka fallback (if it flattens the directory inside the temp unpack folder)
+    if not os.path.exists(full_path):
+        flat_path = relative_path.replace("../", "").replace("..\\", "")
+        full_path = os.path.normpath(os.path.join(base, flat_path))
+        
+    return full_path
 
 
 # --- UI COLORS & STYLING ---
