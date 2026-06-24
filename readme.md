@@ -42,6 +42,7 @@ Developed and tested on Python 3.13.
 
 ## Install
 Download the latest version from the [XenHide Releases](https://github.com/XATUM/XenHide/releases) 
+
 linux:(still working)
 ### Linux / macOS
 
