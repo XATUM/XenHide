@@ -238,7 +238,7 @@ class HomeScreen(QWidget):
 
     def show_about(self):
         QMessageBox.about(self, "About XenHide",
-                          "XenHide v1.0\nMade by XATUM\n\nA steganography tool to hide and extract secret messages from images.")
+                          "XenHide v1.0\nMade by YMAZE\n\nA steganography tool to hide and extract secret messages from images.")
 
 
 class EncryptScreen(QWidget):
